@@ -1,4 +1,3 @@
 data/
-AllProcessed_175K_unbalanced_noGap_SNR2.mat
-AftershockData.mat
-AllProcessed_16K_balanced_noGap_SNR2.mat
+
+utils/__pycache__
