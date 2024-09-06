@@ -1,3 +1,4 @@
+import torch
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -49,6 +50,15 @@ def short_time_fourier_transform(
             ]
             output[i, j] = spectrogram_resized
     return output
+
+
+def integer_label(labels):
+    unique_labels = np.unique(labels)
+    label_mapping = {label: idx for idx, label in enumerate(unique_labels)}
+    print("Label Mapping:", label_mapping)
+    integer_labels = np.array([label_mapping[label] for label in labels])
+    targets = torch.from_numpy(integer_labels).long()
+    return targets
 
 
 def count_unique_colum_and_vlaues(label_data):
