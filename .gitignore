@@ -1,4 +1,4 @@
 data/
 
 utils/__pycache__
-model/__pycache__
+models/__pycache__

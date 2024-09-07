@@ -20,7 +20,7 @@ class CNN(nn.Module):
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
         # self.bn3 = nn.BatchNorm2d(128)
 
-        # self.dropout = nn.Dropout(p=0.25)
+        self.dropout = nn.Dropout(p=0.25)
 
         self.fc1 = nn.Linear(128 * 7 * 7, 256)
         self.bn_fc1 = nn.BatchNorm1d(256)
