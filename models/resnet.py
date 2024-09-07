@@ -2,6 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from torchvision import models
+
+
 
 class ResBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=3, stride=1, padding=1):
@@ -64,4 +67,31 @@ class ResNet(nn.Module):
         x = F.tanh(self.fc4(x))
         x = self.fc5(x)
 
+        return x
+
+
+class PretrainedResNet(nn.Module):
+    def __init__(self, num_classes=6):
+        super(PretrainedResNet, self).__init__()
+        
+    
+        self.resnet = models.resnet18(pretrained=True)
+        
+        
+        self.resnet.conv1 = nn.Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        
+        self.resnet.fc = nn.Identity()
+        
+        self.fc_layers = nn.Sequential(
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, num_classes)
+        )
+
+    def forward(self, x):
+        x = self.resnet(x)
+
+        x = self.fc_layers(x)
         return x
