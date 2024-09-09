@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import pywt
 
 from scipy.signal import stft
 from sklearn.model_selection import train_test_split
@@ -10,7 +11,7 @@ from sklearn.model_selection import train_test_split
 def test_train_split(feature_path, label_path, split):
     df = pd.read_csv(feature_path)
     df_label = pd.read_csv(label_path)
-    df["lables"] = df_label["S"]
+    df["labels"] = df_label["S"]
     train, test = train_test_split(df, test_size=split, shuffle=True)
 
     return (train, test)
@@ -28,7 +29,7 @@ def split_3_channel(df, split=3):
         data[x][1] = b
         data[x][2] = c
 
-    label = df["lables"]
+    label = df["labels"]
     label_data = label.to_numpy()
 
     return (data, label_data)
@@ -49,6 +50,16 @@ def short_time_fourier_transform(
                 : desired_output_shape[0], : desired_output_shape[1]
             ]
             output[i, j] = spectrogram_resized
+    return output
+
+
+def wavelet_transform(data, wavelet='morl', scales=np.arange(1,51)):
+    output = np.zeros((data.shape[0], data.shape[1], len(scales), data.shape[2]))
+
+    for i in range(data.shape[0]):
+        for j in range(data.shape[1]):
+            coeffs, _ = pywt.cwt(data[i, j], scales, wavelet)
+            output[i, j] = np.abs(coeffs)
     return output
 
 
