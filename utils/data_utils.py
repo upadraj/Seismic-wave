@@ -75,3 +75,9 @@ def integer_label(labels):
 def count_unique_colum_and_vlaues(label_data):
     unique_values, count = np.unique(label_data, return_counts=True)
     return (unique_values, count)
+
+def znorm(features):
+    mean = torch.mean(features,dim=0)
+    std = torch.std(features,dim=0)
+    z_score = (features - mean) / std
+    return z_score
