@@ -8,10 +8,9 @@ from scipy.signal import stft
 from sklearn.model_selection import train_test_split
 
 
-def test_train_split(feature_path, label_path, split):
-    df = pd.read_csv(feature_path)
-    df_label = pd.read_csv(label_path)
-    df["labels"] = df_label["S"]
+def test_train_split(df, df_label, split):
+    print(df_label.columns)
+    df["labels"] = df_label['S']
     train, test = train_test_split(df, test_size=split, shuffle=True)
 
     return (train, test)
