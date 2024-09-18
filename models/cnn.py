@@ -2,6 +2,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+
 class CNN(nn.Module):
     def __init__(self):
         super(CNN, self).__init__()
@@ -19,8 +20,10 @@ class CNN(nn.Module):
 
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
         # self.bn3 = nn.BatchNorm2d(128)
-
         # self.`dropout` = nn.Dropout(p=0.25)
+
+        # LSTM layer
+        self.lstm = nn.LSTM(input_size=512, hidden_size=32, num_layers=1, batch_first=True, dropout=0.5)
 
         self.fc1 = nn.Linear(512 * 27 * 27, 512)
         # self.bn_fc1 = nn.BatchNorm1d(256)
@@ -35,6 +38,20 @@ class CNN(nn.Module):
         x = F.tanh(self.conv1(x))
         x = self.pool(F.tanh((self.conv2(x))))
         x = F.tanh((self.conv3(x)))
+
+        # LSTM
+        batch_size, channels, height, width = x.size()
+        x = x.view(batch_size, width, height * channels)
+
+        # # Pass through LSTM
+        lstm_out, (hn, cn) = self.lstm(x)
+        
+        # Flatten the LSTM output for fully connected layers
+        x = lstm_out[:, -1, :]
+        x = x.view(batch_size, -1)
+
+
+
         x = x.view(-1, 512 * 27 * 27)
         x = F.tanh(self.fc1(x))
         # x = F.tanh(self.bn_fc1(self.fc1(x)))
@@ -48,7 +65,6 @@ class CNN(nn.Module):
         Should return the output as logit don't do softmax
         Softmax is already implemented in Cross Entropy loss
         """
-        
         return x
         
         
