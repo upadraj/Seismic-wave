@@ -6,7 +6,9 @@ class CNN(nn.Module):
     def __init__(self):
         super(CNN, self).__init__()
 
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=128, kernel_size=2, padding=1)
+        self.conv1 = nn.Conv2d(
+            in_channels=3, out_channels=128, kernel_size=2, padding=1
+        )
         # self.bn1 = nn.BatchNorm2d(32)
         self.conv2 = nn.Conv2d(
             in_channels=128, out_channels=256, kernel_size=2, padding=1
@@ -27,8 +29,7 @@ class CNN(nn.Module):
         self.fc2 = nn.Linear(512, 256)
         # self.bn_fc2 = nn.BatchNorm1d(128)
         self.fc3 = nn.Linear(256, 6)
-        
-        
+
         ### LSTN Layer.
 
     def forward(self, x):
@@ -40,16 +41,41 @@ class CNN(nn.Module):
         # x = F.tanh(self.bn_fc1(self.fc1(x)))
         # x = F.tanh(self.bn_fc1(self.fc1(x)))
         x = F.tanh(self.fc2(x))
-        x = self.fc3(x) 
+        x = self.fc3(x)
         return x
-    
-    def forwardLSTN(self,x):
-        """
-        Should return the output as logit don't do softmax
-        Softmax is already implemented in Cross Entropy loss
-        """
-        
+
+
+class ImageCNN(nn.Module):
+    def __init__(self):
+        super(ImageCNN, self).__init__()
+        self.conv1 = nn.Conv2d(
+            in_channels=3, out_channels=128, kernel_size=2, padding=3
+        )
+        self.conv2 = nn.Conv2d(
+            in_channels=128, out_channels=256, kernel_size=2, padding=3
+        )
+        self.conv3 = nn.Conv2d(
+            in_channels=256, out_channels=512, kernel_size=2, padding=2
+        )
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
+
+        self.fc1 = nn.Linear(512 * 31 * 31, 512)
+        self.fc2 = nn.Linear(512, 256)
+        self.fc3 = nn.Linear(256, 6)
+
+        # self.bn1 = nn.BatchNorm2d(32)
+        # self.bn2 = nn.BatchNorm2d(64)
+        # self.bn3 = nn.BatchNorm2d(128)
+        # self.bn_fc2 = nn.BatchNorm1d(128)
+        # self.bn_fc1 = nn.BatchNorm1d(256)
+        # self.`dropout` = nn.Dropout(p=0.25)
+
+    def forward(self, x):
+        x = self.pool(F.tanh(self.conv1(x)))
+        x = self.pool(F.tanh((self.conv2(x))))
+        x = self.pool(F.tanh((self.conv3(x))))
+        x = x.view(-1, 512 * 31 * 31)
+        x = F.tanh(self.fc1(x))
+        x = F.tanh(self.fc2(x))
+        x = self.fc3(x)
         return x
-        
-        
-        
