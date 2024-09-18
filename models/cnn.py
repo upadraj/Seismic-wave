@@ -27,6 +27,9 @@ class CNN(nn.Module):
         self.fc2 = nn.Linear(512, 256)
         # self.bn_fc2 = nn.BatchNorm1d(128)
         self.fc3 = nn.Linear(256, 6)
+        
+        
+        ### LSTN Layer.
 
     def forward(self, x):
         x = F.tanh(self.conv1(x))
@@ -37,5 +40,16 @@ class CNN(nn.Module):
         # x = F.tanh(self.bn_fc1(self.fc1(x)))
         # x = F.tanh(self.bn_fc1(self.fc1(x)))
         x = F.tanh(self.fc2(x))
-        x = self.fc3(x)
+        x = self.fc3(x) 
         return x
+    
+    def forwardLSTN(self,x):
+        """
+        Should return the output as logit don't do softmax
+        Softmax is already implemented in Cross Entropy loss
+        """
+        
+        return x
+        
+        
+        
