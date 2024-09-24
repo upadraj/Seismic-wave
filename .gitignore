@@ -6,3 +6,7 @@ models/__pycache__
 spectrogram_images/
 
 trained_models/
+
+production_notebooks/.ipynb_checkpoints
+practise_notebooks/.ipynb_checkpoints
+models/.ipynb_checkpoints
