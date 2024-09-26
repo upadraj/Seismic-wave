@@ -10,3 +10,4 @@ trained_models/
 production_notebooks/.ipynb_checkpoints
 practise_notebooks/.ipynb_checkpoints
 models/.ipynb_checkpoints
+gnn/mnist_data/
