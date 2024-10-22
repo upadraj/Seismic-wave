@@ -12,5 +12,5 @@ practise_notebooks/.ipynb_checkpoints
 models/.ipynb_checkpoints
 gnn/mnist_data/
 
-test.ipynb
+# test.ipynb
 gnn\seismic_gnn\.ipynb_checkpoints
